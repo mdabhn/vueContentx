@@ -1,22 +1,38 @@
 <template>
   <div class="container">
-    <h2>Vue Componets</h2>
-    <button @click="plus">Increase</button>
-    <button @click="minus">Decrease</button>
-    <p>{{ val }}</p>
-    <!-- this function will call everytime No matter the data property update or not  -->
-    <p>{{ status() }}</p>
-    <!-- this will call the computed property which will only update accoding to the data  -->
-    <p>{{ currentstatus }}</p>
-
-    <!-- dynamic css -->
-    <p>double Clcik on me | Signle click on me</p>
-    <div
-      class="squar"
-      :class="color"
-      @dblclick="changeColor"
-      @click="changeColorback"
-    ></div>
+    <div class="d-flex flex-top p-2 bd-highlight">
+      <div class="flex-fill a1">
+        <h4 class="text-center">You</h4>
+        <div class="yourhealt mx-auto">
+          <div class="yourhealt-now" :style="{ width: myCurrentStatus + '%' }">
+            <p class="text-center" style="font-size:20px; color:white">
+              {{ myCurrentStatus }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="flex-fill a2">
+        <h4 class="text-center">Monster</h4>
+        <div class="monsterhealth mx-auto">
+          <div
+            class="monsterhealth-now"
+            :style="{ width: monsterCurrentStatus + '%' }"
+          >
+            <p class="text-center" style="font-size:20px; color:white">
+              {{ monsterCurrentStatus }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex justify-content-around w-25 mx-auto mt-4">
+      <button class="btn btn-success" @click="heal">Heal</button>
+      <button class="btn btn-success" @click="attack">Attack</button>
+      <button class="btn btn-success" @click="powerHit">Power Hit</button>
+    </div>
+    <div class="d-flex justify-content-center mx-auto mt-2">
+      <button class="btn btn-success" @click="resetGame">Restart</button>
+    </div>
   </div>
 </template>
 
@@ -25,43 +41,85 @@
     name: 'Main',
     data() {
       return {
-        val: 0,
-        color: '',
+        myCurrentStatus: 100,
+        monsterCurrentStatus: 100,
+        attakUnit: 11,
+        healUnit: 9,
+        powerAttackunit: 20,
       }
     },
     methods: {
-      plus() {
-        return this.val++
+      attack() {
+        if (this.myCurrentStatus > 0 && this.monsterCurrentStatus > 0) {
+          this.myCurrentStatus =
+            this.myCurrentStatus - Math.floor(Math.random() * this.attakUnit)
+
+          this.monsterCurrentStatus =
+            this.monsterCurrentStatus -
+            Math.floor(Math.random() * this.attakUnit)
+        }
       },
-      minus() {
-        return this.val--
+      heal() {
+        if (this.myCurrentStatus < 100) {
+          this.myCurrentStatus =
+            this.myCurrentStatus + Math.floor(Math.random() * this.healUnit)
+          this.monsterCurrentStatus =
+            this.monsterCurrentStatus +
+            Math.floor(Math.random() * this.healUnit)
+        }
       },
-      status() {
-        return this.val > 5 ? 'Greater than 5' : 'less than 5'
+      powerHit() {
+        if (this.monsterCurrentStatus > 0) {
+          this.myCurrentStatus =
+            this.myCurrentStatus -
+            Math.floor(Math.random() * this.powerAttackunit)
+          this.monsterCurrentStatus =
+            this.monsterCurrentStatus -
+            Math.floor(Math.random() * this.powerAttackunit)
+        }
       },
-      changeColor() {
-        this.color = 'black'
-      },
-      changeColorback() {
-        this.color = ''
-      },
-    },
-    computed: {
-      currentstatus() {
-        return this.val > 5 ? 'Greater than 5x' : 'less than 5x'
+      resetGame() {
+        this.myCurrentStatus = 100
+        this.monsterCurrentStatus = 100
       },
     },
   }
 </script>
 
 <style>
-  .squar {
-    height: 150px;
-    width: 150px;
-    background-color: green;
+  /* .a1 {
+    background: red;
   }
 
-  .black {
-    background-color: black;
+  .a2 {
+    background: green;
+  } */
+
+  .yourhealt {
+    height: 30px;
+    width: 80%;
+    background-color: wheat;
+    border-radius: 25px;
+  }
+  .monsterhealth {
+    height: 30px;
+    width: 80%;
+    background-color: wheat;
+    border-radius: 25px;
+  }
+
+  .yourhealt-now {
+    height: 30px;
+    /* width: 90%; */
+    transition-timing-function: 0.4s ease-in-out;
+    background-color: green;
+    border-radius: 25px;
+  }
+  .monsterhealth-now {
+    height: 30px;
+    /* width: 90%; */
+    transition-timing-function: 0.4s ease-in-out;
+    background-color: rgb(180, 0, 0);
+    border-radius: 25px;
   }
 </style>
