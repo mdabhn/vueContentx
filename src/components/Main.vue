@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" style="margin-top:80px">
     <div class="d-flex flex-top p-2 bd-highlight">
       <div class="flex-fill a1">
         <h4 class="text-center">You</h4>
@@ -57,6 +57,18 @@
           this.monsterCurrentStatus =
             this.monsterCurrentStatus -
             Math.floor(Math.random() * this.attakUnit)
+
+          if (this.myCurrentStatus <= 0) {
+            this.myCurrentStatus = 0
+            alert('Monster Wins')
+            this.resetGame()
+          }
+
+          if (this.monsterCurrentStatus <= 0) {
+            this.monsterCurrentStatus = 0
+            alert('You Win')
+            this.resetGame()
+          }
         }
       },
       heal() {
