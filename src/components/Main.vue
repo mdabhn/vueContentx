@@ -26,9 +26,6 @@
       minus() {
         return this.val--
       },
-      plus2x() {
-        return (this.val = this.val * 2)
-      },
       status() {
         return this.val > 5 ? 'Greater than 5' : 'less than 5'
       },
