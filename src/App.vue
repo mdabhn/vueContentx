@@ -1,7 +1,16 @@
 <template>
-  <div id="app"></div>
+  <div id="app">
+    <Main />
+  </div>
 </template>
 
-<script></script>
+<script>
+  import Main from './components/Main'
+  export default {
+    components: {
+      Main,
+    },
+  }
+</script>
 
 <style></style>
