@@ -1,19 +1,9 @@
 <template>
-  <div id="app">
-    <Main />
-    <ConditionsList />
-  </div>
+  <div id="app"></div>
 </template>
 
 <script>
-  import Main from './components/Main'
-  import ConditionsList from './components/ConditionsList'
-  export default {
-    components: {
-      Main,
-      ConditionsList,
-    },
-  }
+  export default {}
 </script>
 
 <style></style>
