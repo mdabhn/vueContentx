@@ -1,7 +1,8 @@
 <template>
-  <div class="container" style="margin-top:80px">
+  <div class="container" style="margin-top:20px">
+    <h1 class="text-center">Monster Slayer</h1>
     <div class="d-flex flex-top p-2 bd-highlight">
-      <div class="flex-fill a1">
+      <div class="flex-fill">
         <h4 class="text-center">You</h4>
         <div class="yourhealt mx-auto">
           <div class="yourhealt-now" :style="{ width: myCurrentStatus + '%' }">
@@ -11,7 +12,7 @@
           </div>
         </div>
       </div>
-      <div class="flex-fill a2">
+      <div class="flex-fill">
         <h4 class="text-center">Monster</h4>
         <div class="monsterhealth mx-auto">
           <div
@@ -33,6 +34,40 @@
     <div class="d-flex justify-content-center mx-auto mt-2">
       <button class="btn btn-success" @click="resetGame">Restart</button>
     </div>
+
+    <div class="overflow-auto" style="max-height: 300px" v-chat-scroll>
+      <ul
+        class="list-group w-50 mx-auto mt-4"
+        v-for="(log, i) in logs"
+        :key="i"
+      >
+        <li
+          v-if="log.type == 'attack'"
+          class="list-group-item list-group-item-success"
+        >
+          You Attacked {{ -log.monster }} health
+        </li>
+        <li
+          v-if="log.type == 'attack'"
+          class="list-group-item list-group-item-danger"
+        >
+          Monster Attacked {{ -log.me }} health
+        </li>
+
+        <li
+          v-if="log.type == 'heal'"
+          class="list-group-item list-group-item-success"
+        >
+          You healed By {{ +log.me }}
+        </li>
+        <li
+          v-if="log.type == 'heal'"
+          class="list-group-item list-group-item-danger"
+        >
+          Monster healed By {{ +log.monster }}
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -46,17 +81,25 @@
         attakUnit: 11,
         healUnit: 9,
         powerAttackunit: 20,
+        logs: [],
       }
     },
     methods: {
       attack() {
         if (this.myCurrentStatus > 0 && this.monsterCurrentStatus > 0) {
-          this.myCurrentStatus =
-            this.myCurrentStatus - Math.floor(Math.random() * this.attakUnit)
+          let myCal = Math.floor(Math.random() * this.attakUnit)
 
-          this.monsterCurrentStatus =
-            this.monsterCurrentStatus -
-            Math.floor(Math.random() * this.attakUnit)
+          this.myCurrentStatus = this.myCurrentStatus - myCal
+
+          let monsterCal = Math.floor(Math.random() * this.attakUnit)
+
+          this.monsterCurrentStatus = this.monsterCurrentStatus - monsterCal
+
+          this.logs.push({
+            me: myCal,
+            monster: monsterCal,
+            type: 'attack',
+          })
 
           if (this.myCurrentStatus <= 0) {
             this.myCurrentStatus = 0
@@ -73,11 +116,18 @@
       },
       heal() {
         if (this.myCurrentStatus < 100) {
-          this.myCurrentStatus =
-            this.myCurrentStatus + Math.floor(Math.random() * this.healUnit)
-          this.monsterCurrentStatus =
-            this.monsterCurrentStatus +
-            Math.floor(Math.random() * this.healUnit)
+          let myCal = Math.floor(Math.random() * this.healUnit)
+
+          this.myCurrentStatus = this.myCurrentStatus + myCal
+
+          let monsterCal = Math.floor(Math.random() * this.healUnit)
+
+          this.monsterCurrentStatus = this.monsterCurrentStatus + monsterCal
+          this.logs.push({
+            me: myCal,
+            monster: monsterCal,
+            type: 'heal',
+          })
 
           if (this.myCurrentStatus >= 100) {
             this.myCurrentStatus = 100
@@ -90,13 +140,18 @@
       },
       powerHit() {
         if (this.monsterCurrentStatus > 0) {
-          this.myCurrentStatus =
-            this.myCurrentStatus -
-            Math.floor(Math.random() * this.powerAttackunit)
-          this.monsterCurrentStatus =
-            this.monsterCurrentStatus -
-            Math.floor(Math.random() * this.powerAttackunit)
+          let myCal = Math.floor(Math.random() * this.powerAttackunit)
 
+          this.myCurrentStatus = this.myCurrentStatus - myCal
+
+          let monsterCal = Math.floor(Math.random() * this.powerAttackunit)
+
+          this.monsterCurrentStatus = this.monsterCurrentStatus - monsterCal
+          this.logs.push({
+            me: myCal,
+            monster: monsterCal,
+            type: 'attack',
+          })
           if (this.myCurrentStatus <= 0) {
             this.myCurrentStatus = 0
             alert('Monster Wins')
@@ -113,20 +168,13 @@
       resetGame() {
         this.myCurrentStatus = 100
         this.monsterCurrentStatus = 100
+        this.logs = []
       },
     },
   }
 </script>
 
 <style>
-  /* .a1 {
-    background: red;
-  }
-
-  .a2 {
-    background: green;
-  } */
-
   .yourhealt {
     height: 30px;
     width: 80%;
@@ -142,16 +190,24 @@
 
   .yourhealt-now {
     height: 30px;
-    /* width: 90%; */
     transition-timing-function: 0.4s ease-in-out;
     background-color: green;
     border-radius: 25px;
   }
   .monsterhealth-now {
     height: 30px;
-    /* width: 90%; */
     transition-timing-function: 0.4s ease-in-out;
     background-color: rgb(180, 0, 0);
     border-radius: 25px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .btn {
+      height: 36px;
+      margin: 2px;
+    }
+    .list-group {
+      width: 100vw !important;
+    }
   }
 </style>
