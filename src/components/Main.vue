@@ -78,6 +78,14 @@
           this.monsterCurrentStatus =
             this.monsterCurrentStatus +
             Math.floor(Math.random() * this.healUnit)
+
+          if (this.myCurrentStatus >= 100) {
+            this.myCurrentStatus = 100
+          }
+
+          if (this.monsterCurrentStatus >= 100) {
+            this.monsterCurrentStatus = 100
+          }
         }
       },
       powerHit() {
@@ -88,6 +96,18 @@
           this.monsterCurrentStatus =
             this.monsterCurrentStatus -
             Math.floor(Math.random() * this.powerAttackunit)
+
+          if (this.myCurrentStatus <= 0) {
+            this.myCurrentStatus = 0
+            alert('Monster Wins')
+            this.resetGame()
+          }
+
+          if (this.monsterCurrentStatus <= 0) {
+            this.monsterCurrentStatus = 0
+            alert('You Win')
+            this.resetGame()
+          }
         }
       },
       resetGame() {
